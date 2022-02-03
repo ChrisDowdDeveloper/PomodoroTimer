@@ -1,12 +1,3 @@
 .App {
   text-align: center;
 }
-
-.row {
-  justify-content: space-between;
-}
-
-.btn btn-primary {
-  width: 49px;
-  height: 48px;
-}
