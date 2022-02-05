@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default function Stop({isTimerRunning, setIsTimerRunning, session, setSession}) {
+export default function Stop({isTimerRunning, setIsTimerRunning, session, setSession, sound}) {
     
     function stopTimer() {
         setIsTimerRunning(false)

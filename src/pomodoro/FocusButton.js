@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function FocusButton({focusDuration, changeFocus}) {
+export default function FocusButton({focusDuration, changeFocus, sound}) {
 
  function decreaseFocus() {
    changeFocus(focusDuration === 5 ? prevState => prevState - 0 : prevState => prevState - 5);

@@ -65,7 +65,7 @@ function Pomodoro() {
    *
    * NOTE: You won't need to make changes to the callback function
    */
-  useInterval(() => {
+  let sound = useInterval(() => {
       if (session.timeRemaining === 0) {
         new Audio("https://bigsoundbank.com/UPLOAD/mp3/1482.mp3").play();
         return setSession(nextSession(focusDuration, breakDuration));
@@ -104,10 +104,12 @@ function Pomodoro() {
         <FocusButton 
           focusDuration={focusDuration}
           changeFocus={changeFocus}
+          sound={sound}
         />
         <BreakButton 
           breakDuration={breakDuration}
           changeBreak={changeBreak}
+          sound={sound}
         />
       </div>
       <div className="row">
@@ -137,6 +139,7 @@ function Pomodoro() {
               session={session}
               setSession={setSession}
               setIsTimerRunning={setIsTimerRunning}
+              sound={sound}
             />
           </div>
         </div>

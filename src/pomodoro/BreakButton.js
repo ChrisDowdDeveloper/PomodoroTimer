@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function BreakButton({breakDuration, changeBreak}) {
+export default function BreakButton({breakDuration, changeBreak, sound}) {
  function increaseBreak() {
    changeBreak(breakDuration === 15 ? prevState => prevState + 0 : prevState => prevState + 1);
  }
