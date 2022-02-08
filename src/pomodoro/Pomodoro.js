@@ -57,21 +57,23 @@ function Pomodoro() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   // The current session - null where there is no session running
   const [session, setSession] = useState(null);
-  const [focusDuration, changeFocus] = React.useState(25);
-  const [breakDuration, changeBreak] = React.useState(5);
+  const [focusDuration, setFocusDuration] = useState(25);
+  const [breakDuration, setBreakDuration] = useState(5);
+  const [disableBtn, setDisableBtn] = useState(false);
+  const [disableStop, setDisableStop] = useState(true);
 
   /**
    * Custom hook that invokes the callback function every second
    *
    * NOTE: You won't need to make changes to the callback function
    */
-  let sound = useInterval(() => {
-      if (session.timeRemaining === 0) {
-        new Audio("https://bigsoundbank.com/UPLOAD/mp3/1482.mp3").play();
-        return setSession(nextSession(focusDuration, breakDuration));
-      }
-      return setSession(nextTick);
-    },
+  useInterval(() => {
+    if (session.timeRemaining === 0) {
+      new Audio("https://bigsoundbank.com/UPLOAD/mp3/1482.mp3").play();
+      return setSession(nextSession(focusDuration, breakDuration));
+    }
+    return setSession(nextTick);
+  },
     isTimerRunning ? 1000 : null
   );
 
@@ -79,6 +81,8 @@ function Pomodoro() {
    * Called whenever the play/pause button is clicked.
    */
   function playPause() {
+    setDisableBtn(true);
+    setDisableStop(false);
     setIsTimerRunning((prevState) => {
       const nextState = !prevState;
       if (nextState) {
@@ -98,60 +102,64 @@ function Pomodoro() {
     });
   }
 
-  return (
-    <div className="pomodoro">
-      <div className="row">
-        <FocusButton 
-          focusDuration={focusDuration}
-          changeFocus={changeFocus}
-          sound={sound}
-        />
-        <BreakButton 
-          breakDuration={breakDuration}
-          changeBreak={changeBreak}
-          sound={sound}
-        />
-      </div>
-      <div className="row">
-        <div className="col">
-          <div
-            className="btn-group btn-group-lg mb-2"
-            role="group"
-            aria-label="Timer controls"
-          >
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-testid="play-pause"
-              title="Start or pause timer"
-              onClick={playPause}
+
+  if (playPause) {
+    return (
+      <div className="pomodoro">
+        <div className="row">
+          <FocusButton
+            focusDuration={focusDuration}
+            setFocusDuration={setFocusDuration}
+            disabled={disableBtn}
+            isTimerRunning={isTimerRunning}
+          />
+          <BreakButton
+            breakDuration={breakDuration}
+            setBreakDuration={setBreakDuration}
+            disabled={disableBtn}
+            isTimerRunning={isTimerRunning}
+          />
+        </div>
+        <div className="row">
+          <div className="col">
+            <div
+              className="btn-group btn-group-lg mb-2"
+              role="group"
+              aria-label="Timer controls"
             >
-              <span
-                className={classNames({
-                  oi: true,
-                  "oi-media-play": !isTimerRunning,
-                  "oi-media-pause": isTimerRunning,
-                })}
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-testid="play-pause"
+                title="Start or pause timer"
+                onClick={playPause}
+              >
+                <span
+                  className={classNames({
+                    oi: true,
+                    "oi-media-play": !isTimerRunning,
+                    "oi-media-pause": isTimerRunning,
+                  })}
+                />
+              </button>
+              <Stop
+                isTimerRunning={isTimerRunning}
+                session={session}
+                setSession={setSession}
+                setIsTimerRunning={setIsTimerRunning}
               />
-            </button>
-            <Stop 
-              isTimerRunning={isTimerRunning}
-              session={session}
-              setSession={setSession}
-              setIsTimerRunning={setIsTimerRunning}
-              sound={sound}
-            />
+            </div>
           </div>
         </div>
+        <Timer
+          session={session}
+          isTimerRunning={isTimerRunning}
+          focusDuration={focusDuration}
+          breakDuration={breakDuration}
+        />
       </div>
-      <Timer 
-        session={session}
-        isTimerRunning={isTimerRunning}
-        focusDuration={focusDuration}
-        breakDuration={breakDuration}
-      />
-    </div>
-  );
+    );
+  }
 }
 
 export default Pomodoro;
