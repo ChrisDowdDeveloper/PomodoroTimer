@@ -59,8 +59,6 @@ function Pomodoro() {
   const [session, setSession] = useState(null);
   const [focusDuration, setFocusDuration] = useState(25);
   const [breakDuration, setBreakDuration] = useState(5);
-  const [disableBtn, setDisableBtn] = useState(false);
-  const [disableStop, setDisableStop] = useState(true);
 
   /**
    * Custom hook that invokes the callback function every second
@@ -81,11 +79,10 @@ function Pomodoro() {
    * Called whenever the play/pause button is clicked.
    */
   function playPause() {
-    setDisableBtn(true);
-    setDisableStop(false);
     setIsTimerRunning((prevState) => {
       const nextState = !prevState;
       if (nextState) {
+
         setSession((prevStateSession) => {
           // If the timer is starting and the previous session is null,
           // start a focusing session.
@@ -102,21 +99,17 @@ function Pomodoro() {
     });
   }
 
-
-  if (playPause) {
     return (
       <div className="pomodoro">
         <div className="row">
           <FocusButton
             focusDuration={focusDuration}
             setFocusDuration={setFocusDuration}
-            disabled={disableBtn}
             isTimerRunning={isTimerRunning}
           />
           <BreakButton
             breakDuration={breakDuration}
             setBreakDuration={setBreakDuration}
-            disabled={disableBtn}
             isTimerRunning={isTimerRunning}
           />
         </div>
@@ -159,7 +152,6 @@ function Pomodoro() {
         />
       </div>
     );
-  }
 }
 
 export default Pomodoro;

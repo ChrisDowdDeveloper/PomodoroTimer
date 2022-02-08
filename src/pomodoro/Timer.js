@@ -1,7 +1,7 @@
 import React from "react";
 import { minutesToDuration, secondsToDuration } from "../utils/duration";
 
-export default function Timer({ session, focusDuration, breakDuration }) {
+export default function Timer({ session, focusDuration, breakDuration, isTimerRunning }) {
 
   if (session !== null) {
     return (
@@ -15,10 +15,11 @@ export default function Timer({ session, focusDuration, breakDuration }) {
               className="lead"
               data-testid="session-sub-title"
             >
-              {secondsToDuration(session?.timeRemaining)} remaining
+              {secondsToDuration(session.timeRemaining)} remaining
             </p>
           </div>
         </div>
+        {isTimerRunning ? <div></div> : <p>PAUSED</p>} 
         <div className="row mb-2">
           <div className="col">
             <div
